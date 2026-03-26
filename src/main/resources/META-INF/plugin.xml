@@ -5,7 +5,7 @@
     <vendor>jasondlee</vendor>
 
     <depends>com.intellij.modules.platform</depends>
-    <depends optional="true" config-file="quarkus-support.xml">com.redhat.devtools.intellij.quarkus</depends>
+    <depends>com.redhat.devtools.intellij.quarkus</depends>
 
     <resource-bundle>messages.MyBundle</resource-bundle>
 
