@@ -3,7 +3,7 @@ package com.steeplesoft.intelliroq.actions
 import com.intellij.openapi.actionSystem.ActionUpdateThread
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
-import com.intellij.openapi.application.WriteAction
+import com.intellij.openapi.command.WriteCommandAction
 import com.intellij.openapi.components.service
 import com.intellij.openapi.diagnostic.thisLogger
 import com.intellij.openapi.project.Project
@@ -149,7 +149,7 @@ class AddRoqPluginAction : AnAction() {
         val version = pluginManager.getRoqVersion() ?: RoqPluginManager.DEFAULT_ROQ_VERSION
 
         try {
-            WriteAction.runAndWait<IOException> {
+            WriteCommandAction.runWriteCommandAction(project) {
                 val content = String(pomFile.contentsToByteArray())
 
                 // Find the dependencies section
@@ -209,7 +209,7 @@ class AddRoqPluginAction : AnAction() {
 
             if (files.isNotEmpty()) {
                 val buildFile = files.first().virtualFile
-                return addToGradleFile(buildFile, pluginManager, plugin, filename.endsWith(".kts"))
+                return addToGradleFile(project, buildFile, pluginManager, plugin, filename.endsWith(".kts"))
             }
         }
 
@@ -220,6 +220,7 @@ class AddRoqPluginAction : AnAction() {
      * Adds plugin to a specific Gradle build file.
      */
     private fun addToGradleFile(
+        project: Project,
         buildFile: VirtualFile,
         pluginManager: RoqPluginManager,
         plugin: RoqPluginManager.RoqPlugin,
@@ -228,7 +229,7 @@ class AddRoqPluginAction : AnAction() {
         val version = pluginManager.getRoqVersion() ?: RoqPluginManager.DEFAULT_ROQ_VERSION
 
         try {
-            WriteAction.runAndWait<IOException> {
+            WriteCommandAction.runWriteCommandAction(project) {
                 val content = String(buildFile.contentsToByteArray())
 
                 val quote = if (isKotlin) "\"" else "'"

@@ -3,7 +3,7 @@ package com.steeplesoft.intelliroq.actions
 import com.intellij.openapi.actionSystem.ActionUpdateThread
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
-import com.intellij.openapi.application.WriteAction
+import com.intellij.openapi.command.WriteCommandAction
 import com.intellij.openapi.components.service
 import com.intellij.openapi.diagnostic.thisLogger
 import com.intellij.openapi.fileEditor.FileEditorManager
@@ -60,7 +60,7 @@ class CreateRoqPartialAction : AnAction() {
         ) ?: return
 
         try {
-            val newFile = createPartialFile(partialsDir, fileName)
+            val newFile = createPartialFile(project, partialsDir, fileName)
             // Open the file in editor
             FileEditorManager.getInstance(project).openFile(newFile, true)
         } catch (ex: Exception) {
@@ -89,8 +89,8 @@ class CreateRoqPartialAction : AnAction() {
     }
 
     private fun getOrCreatePartialsDir(project: Project): VirtualFile? {
-        return WriteAction.computeAndWait<VirtualFile?, IOException> {
-            val baseDir = project.baseDir ?: return@computeAndWait null
+        return WriteCommandAction.writeCommandAction(project).compute<VirtualFile?, IOException> {
+            val baseDir = project.baseDir ?: return@compute null
 
             var templatesDir = baseDir.findChild("templates")
             if (templatesDir == null) {
@@ -106,8 +106,8 @@ class CreateRoqPartialAction : AnAction() {
         }
     }
 
-    private fun createPartialFile(partialsDir: VirtualFile, fileName: String): VirtualFile {
-        return WriteAction.computeAndWait<VirtualFile, IOException> {
+    private fun createPartialFile(project: Project, partialsDir: VirtualFile, fileName: String): VirtualFile {
+        return WriteCommandAction.writeCommandAction(project).compute<VirtualFile, IOException> {
             val file = partialsDir.createChildData(this, fileName)
 
             // Create template content with basic Qute partial structure

@@ -2,6 +2,7 @@ package com.steeplesoft.intelliroq.toolWindow
 
 import com.intellij.openapi.components.service
 import com.intellij.openapi.project.Project
+import com.intellij.openapi.ui.Messages
 import com.intellij.openapi.wm.ToolWindow
 import com.intellij.openapi.wm.ToolWindowFactory
 import com.intellij.ui.components.JBLabel
@@ -187,11 +188,11 @@ class MyToolWindowFactory : ToolWindowFactory {
             val addPluginButton = JButton("Add Plugin...")
             addPluginButton.addActionListener {
                 // This would trigger the add plugin action
-                JOptionPane.showMessageDialog(
-                    panel,
+                Messages.showMessageDialog(
+                    project,
                     "Use Tools > Roq > Add Roq Plugin... to add plugins",
                     "Add Plugin",
-                    JOptionPane.INFORMATION_MESSAGE
+                    Messages.getInformationIcon()
                 )
             }
             panel.add(addPluginButton, BorderLayout.SOUTH)
@@ -204,11 +205,11 @@ class MyToolWindowFactory : ToolWindowFactory {
             button.toolTipText = tooltip
             button.alignmentX = JComponent.LEFT_ALIGNMENT
             button.addActionListener {
-                JOptionPane.showMessageDialog(
-                    button,
+                Messages.showMessageDialog(
+                    project,
                     "Use Tools > Roq menu for this action",
                     text,
-                    JOptionPane.INFORMATION_MESSAGE
+                    Messages.getInformationIcon()
                 )
             }
             return button

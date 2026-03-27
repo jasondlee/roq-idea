@@ -3,7 +3,7 @@ package com.steeplesoft.intelliroq.actions
 import com.intellij.openapi.actionSystem.ActionUpdateThread
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
-import com.intellij.openapi.application.WriteAction
+import com.intellij.openapi.command.WriteCommandAction
 import com.intellij.openapi.components.service
 import com.intellij.openapi.diagnostic.thisLogger
 import com.intellij.openapi.project.Project
@@ -80,7 +80,7 @@ class InitializeRoqProjectAction : AnAction() {
     private fun initializeRoqStructure(project: Project) {
         val baseDir = project.baseDir ?: throw IOException("Project base directory not found")
 
-        WriteAction.runAndWait<IOException> {
+        WriteCommandAction.runWriteCommandAction(project) {
             // Create main directories
             val contentDir = baseDir.createChildDirectory(this, "content")
             val templatesDir = baseDir.createChildDirectory(this, "templates")

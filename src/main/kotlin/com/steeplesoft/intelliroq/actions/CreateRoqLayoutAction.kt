@@ -3,7 +3,7 @@ package com.steeplesoft.intelliroq.actions
 import com.intellij.openapi.actionSystem.ActionUpdateThread
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
-import com.intellij.openapi.application.WriteAction
+import com.intellij.openapi.command.WriteCommandAction
 import com.intellij.openapi.components.service
 import com.intellij.openapi.diagnostic.thisLogger
 import com.intellij.openapi.fileEditor.FileEditorManager
@@ -60,7 +60,7 @@ class CreateRoqLayoutAction : AnAction() {
         ) ?: return
 
         try {
-            val newFile = createLayoutFile(layoutsDir, fileName)
+            val newFile = createLayoutFile(project, layoutsDir, fileName)
             // Open the file in editor
             FileEditorManager.getInstance(project).openFile(newFile, true)
         } catch (ex: Exception) {
@@ -89,8 +89,8 @@ class CreateRoqLayoutAction : AnAction() {
     }
 
     private fun getOrCreateLayoutsDir(project: Project): VirtualFile? {
-        return WriteAction.computeAndWait<VirtualFile?, IOException> {
-            val baseDir = project.baseDir ?: return@computeAndWait null
+        return WriteCommandAction.writeCommandAction(project).compute<VirtualFile?, IOException> {
+            val baseDir = project.baseDir ?: return@compute null
 
             var templatesDir = baseDir.findChild("templates")
             if (templatesDir == null) {
@@ -106,8 +106,8 @@ class CreateRoqLayoutAction : AnAction() {
         }
     }
 
-    private fun createLayoutFile(layoutsDir: VirtualFile, fileName: String): VirtualFile {
-        return WriteAction.computeAndWait<VirtualFile, IOException> {
+    private fun createLayoutFile(project: Project, layoutsDir: VirtualFile, fileName: String): VirtualFile {
+        return WriteCommandAction.writeCommandAction(project).compute<VirtualFile, IOException> {
             val file = layoutsDir.createChildData(this, fileName)
 
             // Create template content with basic Qute structure

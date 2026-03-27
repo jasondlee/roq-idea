@@ -3,7 +3,7 @@ package com.steeplesoft.intelliroq.actions
 import com.intellij.openapi.actionSystem.ActionUpdateThread
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
-import com.intellij.openapi.application.WriteAction
+import com.intellij.openapi.command.WriteCommandAction
 import com.intellij.openapi.components.service
 import com.intellij.openapi.diagnostic.thisLogger
 import com.intellij.openapi.fileEditor.FileEditorManager
@@ -66,7 +66,7 @@ class CreateRoqDataFileAction : AnAction() {
         ) ?: return
 
         try {
-            val newFile = createDataFile(dataDir, fileName)
+            val newFile = createDataFile(project, dataDir, fileName)
             // Open the file in editor
             FileEditorManager.getInstance(project).openFile(newFile, true)
         } catch (ex: Exception) {
@@ -94,8 +94,8 @@ class CreateRoqDataFileAction : AnAction() {
         return ActionUpdateThread.BGT
     }
 
-    private fun createDataFile(dataDir: VirtualFile, fileName: String): VirtualFile {
-        return WriteAction.computeAndWait<VirtualFile, IOException> {
+    private fun createDataFile(project: Project, dataDir: VirtualFile, fileName: String): VirtualFile {
+        return WriteCommandAction.writeCommandAction(project).compute<VirtualFile, IOException> {
             val file = dataDir.createChildData(this, fileName)
 
             // Create template content based on file type
