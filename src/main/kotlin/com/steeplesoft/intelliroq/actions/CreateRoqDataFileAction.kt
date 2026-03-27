@@ -82,12 +82,12 @@ class CreateRoqDataFileAction : AnAction() {
     override fun update(e: AnActionEvent) {
         val project = e.project
         if (project == null) {
-            e.presentation.isEnabled = false
+            e.presentation.isVisible = false
             return
         }
 
         val detector = project.service<RoqProjectDetector>()
-        e.presentation.isEnabled = detector.isRoqProject()
+        e.presentation.isVisible = detector.isRoqProject()
     }
 
     override fun getActionUpdateThread(): ActionUpdateThread {

@@ -42,6 +42,26 @@
     </extensions>
 
     <actions>
+        <!-- Roq "New" actions in File | New menu -->
+        <action id="com.steeplesoft.intelliroq.CreateDataFile"
+                class="com.steeplesoft.intelliroq.actions.CreateRoqDataFileAction"
+                text="Roq Data File"
+                description="Create a new data file (YAML/JSON) in the data/ directory">
+            <add-to-group group-id="NewGroup" anchor="last"/>
+        </action>
+        <action id="com.steeplesoft.intelliroq.CreateLayout"
+                class="com.steeplesoft.intelliroq.actions.CreateRoqLayoutAction"
+                text="Roq Layout"
+                description="Create a new layout template in templates/layouts/">
+            <add-to-group group-id="NewGroup" anchor="last"/>
+        </action>
+        <action id="com.steeplesoft.intelliroq.CreatePartial"
+                class="com.steeplesoft.intelliroq.actions.CreateRoqPartialAction"
+                text="Roq Partial"
+                description="Create a new partial template in templates/partials/">
+            <add-to-group group-id="NewGroup" anchor="last"/>
+        </action>
+
         <group id="com.steeplesoft.intelliroq.ActionGroup" text="Roq" popup="true">
             <add-to-group group-id="ToolsMenu" anchor="last"/>
             <action id="com.steeplesoft.intelliroq.InitializeRoqProject"
@@ -49,15 +69,15 @@
                     text="Initialize Roq Project Structure"
                     description="Create the Roq directory structure in this project"/>
             <separator/>
-            <action id="com.steeplesoft.intelliroq.CreateDataFile"
+            <action id="com.steeplesoft.intelliroq.CreateDataFile.Tools"
                     class="com.steeplesoft.intelliroq.actions.CreateRoqDataFileAction"
                     text="New Data File..."
                     description="Create a new data file (YAML/JSON) in the data/ directory"/>
-            <action id="com.steeplesoft.intelliroq.CreateLayout"
+            <action id="com.steeplesoft.intelliroq.CreateLayout.Tools"
                     class="com.steeplesoft.intelliroq.actions.CreateRoqLayoutAction"
                     text="New Layout..."
                     description="Create a new layout template in templates/layouts/"/>
-            <action id="com.steeplesoft.intelliroq.CreatePartial"
+            <action id="com.steeplesoft.intelliroq.CreatePartial.Tools"
                     class="com.steeplesoft.intelliroq.actions.CreateRoqPartialAction"
                     text="New Partial..."
                     description="Create a new partial template in templates/partials/"/>

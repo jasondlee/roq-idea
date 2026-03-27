@@ -81,7 +81,7 @@ class CreateRoqLayoutAction : AnAction() {
         }
 
         val detector = project.service<RoqProjectDetector>()
-        e.presentation.isEnabled = detector.isRoqProject()
+        e.presentation.isVisible = detector.isRoqProject()
     }
 
     override fun getActionUpdateThread(): ActionUpdateThread {
