@@ -5,7 +5,13 @@
     <vendor>jasondlee</vendor>
 
     <depends>com.intellij.modules.platform</depends>
+    <depends>com.intellij.java</depends>
+    <depends>com.intellij.properties</depends>
     <depends>com.redhat.devtools.intellij.quarkus</depends>
+    <depends>com.redhat.devtools.lsp4ij</depends>
+    <depends>com.redhat.devtools.intellij.telemetry</depends>
+    <depends optional="true">org.jetbrains.idea.maven</depends>
+    <depends optional="true">org.jetbrains.plugins.gradle</depends>
 
     <resource-bundle>messages.MyBundle</resource-bundle>
 
