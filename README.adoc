@@ -1,0 +1,183 @@
+= IntelliRoq
+
+image:https://github.com/jasondlee/intelliroq/workflows/Build/badge.svg[Build]
+image:https://img.shields.io/jetbrains/plugin/v/MARKETPLACE_ID.svg[Version,link=https://plugins.jetbrains.com/plugin/MARKETPLACE_ID]
+image:https://img.shields.io/jetbrains/plugin/d/MARKETPLACE_ID.svg[Downloads,link=https://plugins.jetbrains.com/plugin/MARKETPLACE_ID]
+
+////
+Plugin description
+////
+IntelliRoq provides comprehensive IDE support for link:https://iamroq.com[Roq] static site generator projects in IntelliJ IDEA. Build, manage, and preview Roq-powered websites directly from your IDE with intelligent project management, plugin installation, and integrated development workflows.
+
+*Key Features:*
+
+* Automatic Roq project detection and initialization
+* One-click creation of data files, layouts, and partials
+* Interactive Roq plugin management (10 official plugins supported)
+* Integrated Quarkus dev mode with live reload
+* Production build generation
+* Dedicated tool window for project overview and quick actions
+
+Streamline your Roq development workflow with native IDE integration.
+////
+Plugin description end
+////
+
+== Features
+
+=== Project Management
+
+* *Automatic Project Detection* - Detects Roq projects by analyzing directory structure and build files
+* *Project Initialization* - Create complete Roq project structure with one click
+* *File Creation Wizards* - Generate data files (YAML/JSON), layouts, and partials with templates
+
+=== Plugin Management
+
+* *Plugin Detection* - Automatically discovers installed Roq plugins from Maven/Gradle dependencies
+* *Interactive Installation* - Add plugins through a selection dialog with descriptions
+* *Supported Plugins* (10 official):
+** `markdown` - CommonMark content processing
+** `tagging` - Dynamic tag collection pages
+** `aliases` - URL redirections
+** `asciidoc` / `asciidoc-jruby` - AsciiDoc markup support
+** `qrcode` - QR code embedding
+** `series` - Group related posts
+** `sitemap` - Auto-generate sitemap.xml
+** `lunr` - Client-side search indexing
+** `diagram` - Render diagrams via Kroki.io
+
+=== Development Workflow
+
+* *Quarkus Dev Mode* - Custom run configuration for development mode with live reload
+* *Configurable Port* - Set custom port for development server (default: 8080)
+* *Console Integration* - View development server output in IDE run window
+* *Build System Support* - Automatic Maven/Gradle detection with wrapper support
+
+=== Production Builds
+
+* *Static Site Generation* - One-click production builds from IDE
+* *Progress Tracking* - Monitor build progress in console view
+* *Build Output* - Generated files in `target/roq/` (Maven) or `build/roq/` (Gradle)
+
+=== Tool Window
+
+* *Project Overview* - View Roq version and directory structure status
+* *Quick Actions* - Direct access to common operations (create files, build site)
+* *Plugin List* - See installed plugins with versions at a glance
+* *Context-Aware* - Interface adapts for Roq and non-Roq projects
+
+== Requirements
+
+* IntelliJ IDEA 2025.2+ (build 252+)
+* Java 21+
+* Existing Roq project or ability to initialize one
+
+== Installation
+
+=== Using IDE Built-in Plugin System
+
+kbd:[Settings/Preferences] > kbd:[Plugins] > kbd:[Marketplace] > kbd:[Search for "IntelliRoq"] > kbd:[Install]
+
+=== Using JetBrains Marketplace
+
+Go to link:https://plugins.jetbrains.com/plugin/MARKETPLACE_ID[JetBrains Marketplace] and install it by clicking the kbd:[Install to ...] button in case your IDE is running.
+
+You can also download the link:https://plugins.jetbrains.com/plugin/MARKETPLACE_ID/versions[latest release] from JetBrains Marketplace and install it manually using
+kbd:[Settings/Preferences] > kbd:[Plugins] > kbd:[⚙️] > kbd:[Install plugin from disk...]
+
+=== Manual Installation
+
+Download the link:https://github.com/jasondlee/intelliroq/releases/latest[latest release] and install it manually using
+kbd:[Settings/Preferences] > kbd:[Plugins] > kbd:[⚙️] > kbd:[Install plugin from disk...]
+
+== Getting Started
+
+=== Initialize a New Roq Project
+
+. Create a new Java/Maven/Gradle project in IntelliJ IDEA
+. Go to *Tools > Roq > Initialize Roq Project Structure*
+. Add Roq dependencies to your `pom.xml` or `build.gradle`
+. Start creating content!
+
+=== Set Up Development Mode
+
+. Open *Run > Edit Configurations*
+. Click *+* and select *Roq Dev Mode*
+. Configure port (default: 8080) and environment variables
+. Click *Run* to start the development server with live reload
+
+=== Add Roq Plugins
+
+. Go to *Tools > Roq > Add Roq Plugin...*
+. Select plugins from the list (e.g., "Sitemap", "Tagging")
+. Click *OK* - build file is updated automatically
+. Refresh Maven/Gradle dependencies
+. Plugins are ready to use!
+
+=== Build for Production
+
+. Go to *Tools > Roq > Build Static Site*
+. Monitor build progress in the console
+. Find static files in `target/roq/` or `build/roq/`
+. Deploy to your hosting provider
+
+== Tools Menu
+
+Access all features via *Tools > Roq*:
+
+----
+Tools > Roq
+├── Initialize Roq Project Structure
+├─────────────────────────────────
+├── New Data File...
+├── New Layout...
+├── New Partial...
+├─────────────────────────────────
+├── Add Roq Plugin...
+├── View Installed Plugins
+├─────────────────────────────────
+└── Build Static Site
+----
+
+== Documentation
+
+* *link:FEATURES.md[FEATURES.md]* - Complete feature documentation with examples
+* *link:CLAUDE.md[CLAUDE.md]* - Development guide and architecture details
+* *link:CHANGELOG.md[CHANGELOG.md]* - Version history and release notes
+
+== Contributing
+
+Contributions are welcome! Please see link:CLAUDE.md[CLAUDE.md] for development workflow and architecture details.
+
+=== Development Setup
+
+[source,bash]
+----
+# Build the plugin
+./gradlew build
+
+# Run IntelliJ IDEA with the plugin loaded
+./gradlew runIde
+
+# Run tests
+./gradlew test
+
+# Verify plugin compatibility
+./gradlew verifyPlugin
+----
+
+== Support
+
+* *Issues*: link:https://github.com/jasondlee/intelliroq/issues[GitHub Issues]
+* *Roq Documentation*: link:https://iamroq.com[iamroq.com]
+* *Plugin Repository*: link:https://github.com/jasondlee/intelliroq[github.com/jasondlee/intelliroq]
+
+== License
+
+This plugin is built using the link:https://github.com/JetBrains/intellij-platform-plugin-template[IntelliJ Platform Plugin Template].
+
+'''
+
+*Plugin ID*: `com.steeplesoft` +
+*Version*: 0.0.1 +
+*Compatible with*: IntelliJ IDEA 2025.2+
