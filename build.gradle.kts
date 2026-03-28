@@ -89,9 +89,15 @@ intellijPlatform {
     }
 
     signing {
-        certificateChain = providers.environmentVariable("CERTIFICATE_CHAIN")
-        privateKey = providers.environmentVariable("PRIVATE_KEY")
-        password = providers.environmentVariable("PRIVATE_KEY_PASSWORD")
+        //certificateChain = providers.environmentVariable("CERTIFICATE_CHAIN")
+        //privateKey = providers.environmentVariable("PRIVATE_KEY")
+        val certFile = providers.environmentVariable("CERTIFICATE_FILE")
+        val keyFile = providers.environmentVariable("PRIVATE_KEY_FILE")
+        if (certFile.isPresent && keyFile.isPresent) {
+            certificateChainFile = file(certFile)
+            privateKeyFile = file(keyFile)
+            password = providers.environmentVariable("PRIVATE_KEY_PASSWORD")
+        }
     }
 
     publishing {
