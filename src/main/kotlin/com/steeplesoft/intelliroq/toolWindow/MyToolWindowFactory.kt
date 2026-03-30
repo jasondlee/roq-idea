@@ -21,7 +21,7 @@ class MyToolWindowFactory : ToolWindowFactory {
 
     override fun createToolWindowContent(project: Project, toolWindow: ToolWindow) {
         val roqToolWindow = RoqToolWindow(project)
-        val content = ContentFactory.getInstance().createContent(roqToolWindow.getContent(), null, false)
+        val content = ContentFactory.SERVICE.getInstance().createContent(roqToolWindow.getContent(), null, false)
         toolWindow.contentManager.addContent(content)
     }
 
