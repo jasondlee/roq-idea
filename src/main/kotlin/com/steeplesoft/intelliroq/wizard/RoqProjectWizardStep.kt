@@ -35,6 +35,12 @@ class RoqProjectWizardStep(private val builder: RoqModuleBuilder) : ModuleWizard
             add(mavenRadio)
             add(Box.createHorizontalStrut(20))
             add(gradleRadio)
+            /*
+            segmentedButton(listOf("Maven", "Gradle")) {
+                    text = it
+                    toolTipText = it
+                }.bind(buildSystemProperty)
+             */
         }
 
         // Create plugins panel with 2 columns
@@ -42,11 +48,11 @@ class RoqProjectWizardStep(private val builder: RoqModuleBuilder) : ModuleWizard
 
         // Build main panel using FormBuilder
         mainPanel = FormBuilder.createFormBuilder()
-            .addLabeledComponent(JBLabel("Build System:"), buildSystemPanel)
+            .addLabeledComponent(JBLabel("Build system:"), buildSystemPanel)
             .addVerticalGap(10)
             .addLabeledComponent(JBLabel("Site URL:"), siteUrlField)
             .addVerticalGap(15)
-            .addLabeledComponent(JBLabel("Roq Plugins:"), JBLabel("Select the plugins to include in your project"))
+            .addLabeledComponent(JBLabel("Roq plugins:"), JBLabel("Select the plugins to include in your project"))
             .addVerticalGap(5)
             .addComponentFillVertically(pluginsPanel, 0)
             .panel.apply {
@@ -58,7 +64,6 @@ class RoqProjectWizardStep(private val builder: RoqModuleBuilder) : ModuleWizard
      * Creates the plugins selection panel with checkboxes in 2 columns.
      */
     private fun createPluginsPanel(): JPanel {
-        val pluginsPanel = JPanel(GridLayout(5, 2, 20, 5))
 
         // Get plugins in a sorted order for consistent layout
         val plugins = RoqPluginManager.KNOWN_PLUGINS.values.sortedBy { plugin ->
@@ -66,6 +71,7 @@ class RoqProjectWizardStep(private val builder: RoqModuleBuilder) : ModuleWizard
             plugin.name
         }
 
+        val pluginsPanel = JPanel(GridLayout(plugins.size, 1, 5, 5))
         // Create checkboxes for each plugin
         plugins.forEach { plugin ->
             val checkbox = JCheckBox("${plugin.displayName} - ${plugin.description}")
