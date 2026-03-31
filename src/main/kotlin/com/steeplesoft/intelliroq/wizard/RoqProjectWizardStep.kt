@@ -16,6 +16,10 @@ import javax.swing.*
  */
 class RoqProjectWizardStep(private val builder: RoqModuleBuilder) : ModuleWizardStep() {
 
+    private val useCodestartCheckbox = JCheckBox(
+        "Use Quarkus Codestart API (experimental - uses official Quarkus project generator)",
+        true
+    )
     private val mavenRadio = JRadioButton("Maven", true)
     private val gradleRadio = JRadioButton("Gradle", false)
     private val siteUrlField = JBTextField("http://localhost:8080", 30)
@@ -48,6 +52,10 @@ class RoqProjectWizardStep(private val builder: RoqModuleBuilder) : ModuleWizard
 
         // Build main panel using FormBuilder
         mainPanel = FormBuilder.createFormBuilder()
+            .addComponent(useCodestartCheckbox)
+            .addVerticalGap(10)
+            .addSeparator()
+            .addVerticalGap(10)
             .addLabeledComponent(JBLabel("Build system:"), buildSystemPanel)
             .addVerticalGap(10)
             .addLabeledComponent(JBLabel("Site URL:"), siteUrlField)
@@ -94,6 +102,9 @@ class RoqProjectWizardStep(private val builder: RoqModuleBuilder) : ModuleWizard
     override fun getComponent(): JComponent = mainPanel
 
     override fun updateDataModel() {
+        // Save codestart preference
+        builder.useCodestartGenerator = useCodestartCheckbox.isSelected
+
         // Save build system selection
         builder.buildSystem = if (mavenRadio.isSelected) {
             RoqModuleBuilder.BuildSystem.MAVEN

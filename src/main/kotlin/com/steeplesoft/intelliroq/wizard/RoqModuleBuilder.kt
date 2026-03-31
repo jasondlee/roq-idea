@@ -10,7 +10,9 @@ import com.intellij.openapi.module.ModuleType
 import com.intellij.openapi.roots.ModifiableRootModel
 import com.intellij.openapi.ui.Messages
 import com.intellij.openapi.vfs.VfsUtil
+import com.steeplesoft.intelliroq.bar.QuarkusCodestartRoqProjectGenerator
 import com.steeplesoft.intelliroq.icons.RoqIcons
+import io.quarkus.devtools.project.BuildTool
 import org.jetbrains.jps.model.java.JavaResourceRootType
 
 /**
@@ -25,6 +27,7 @@ class RoqModuleBuilder : ModuleBuilder() {
     var siteUrl: String = "http://localhost:8080"
     var selectedPlugins: MutableSet<String> = mutableSetOf("markdown")
     var buildSystem: BuildSystem = BuildSystem.MAVEN
+    var useCodestartGenerator: Boolean = true
 
     override fun getModuleType(): ModuleType<*> = RoqModuleType.INSTANCE
 
@@ -42,31 +45,16 @@ class RoqModuleBuilder : ModuleBuilder() {
         }
 
         try {
-            WriteCommandAction.runWriteCommandAction(modifiableRootModel.project) {
-                // 1. Create directory structure
-                RoqProjectInitializer.createDirectoryStructure(baseDir)
-
-                // 2. Create sample files
-                RoqProjectInitializer.createSampleFiles(baseDir, siteUrl)
-
-                // 3. Create application.properties
-                RoqProjectInitializer.createApplicationProperties(baseDir, siteUrl)
-
-                // 4. Generate build file
-                when (buildSystem) {
-                    BuildSystem.MAVEN -> createMavenProject(baseDir)
-                    BuildSystem.GRADLE -> createGradleProject(baseDir)
-                }
-
-                // 5. Mark src/main/resources as resource root
-                val resourcesDir = baseDir.findFileByRelativePath("src/main/resources")
-                if (resourcesDir != null) {
-                    contentEntry.addSourceFolder(resourcesDir, JavaResourceRootType.RESOURCE)
-                }
-
-                // Refresh file system
-                baseDir.refresh(false, true)
+            if (useCodestartGenerator) {
+                // Use the Quarkus Codestart API
+                createProjectWithCodestart(baseDir, modifiableRootModel)
+            } else {
+                // Use the manual generation approach
+                createProjectManually(baseDir, contentEntry)
             }
+
+            // Refresh file system
+            baseDir.refresh(false, true)
         } catch (ex: Exception) {
             thisLogger().error("Failed to initialize Roq project", ex)
             Messages.showErrorDialog(
@@ -74,6 +62,81 @@ class RoqModuleBuilder : ModuleBuilder() {
                 "Failed to create Roq project: ${ex.message}",
                 "Project Creation Error"
             )
+        }
+    }
+
+    /**
+     * Creates the project using the Quarkus Codestart API.
+     */
+    private fun createProjectWithCodestart(
+        baseDir: com.intellij.openapi.vfs.VirtualFile,
+        modifiableRootModel: ModifiableRootModel
+    ) {
+        thisLogger().info("Creating Roq project using Quarkus Codestart API")
+
+        val generator = QuarkusCodestartRoqProjectGenerator()
+
+        // Convert build system
+        val quarkusBuildTool = when (buildSystem) {
+            BuildSystem.MAVEN -> BuildTool.MAVEN
+            BuildSystem.GRADLE -> BuildTool.GRADLE_KOTLIN_DSL
+        }
+
+        // Filter out "markdown" from selected plugins as it's core
+        val additionalPlugins = selectedPlugins.filter { it != "markdown" }.toSet()
+
+        val config = QuarkusCodestartRoqProjectGenerator.RoqProjectConfig(
+            outputPath = baseDir.toNioPath(),
+            groupId = "com.example",
+            artifactId = baseDir.name,
+            version = "1.0.0-SNAPSHOT",
+            buildTool = quarkusBuildTool,
+            javaVersion = "21",
+            includeDefaultTheme = true,
+            additionalPlugins = additionalPlugins
+        )
+
+        generator.createRoqProject(config)
+
+        // Mark src/main/resources as resource root
+        baseDir.refresh(false, true)
+        val resourcesDir = baseDir.findFileByRelativePath("src/main/resources")
+        if (resourcesDir != null) {
+            val contentEntry = modifiableRootModel.contentEntries.firstOrNull()
+            contentEntry?.addSourceFolder(resourcesDir, JavaResourceRootType.RESOURCE)
+        }
+    }
+
+    /**
+     * Creates the project using manual generation (original approach).
+     */
+    private fun createProjectManually(
+        baseDir: com.intellij.openapi.vfs.VirtualFile,
+        contentEntry: com.intellij.openapi.roots.ContentEntry
+    ) {
+        thisLogger().info("Creating Roq project using manual generation")
+
+        WriteCommandAction.runWriteCommandAction(null) {
+            // 1. Create directory structure
+            RoqProjectInitializer.createDirectoryStructure(baseDir)
+
+            // 2. Create sample files
+            RoqProjectInitializer.createSampleFiles(baseDir, siteUrl)
+
+            // 3. Create application.properties
+            RoqProjectInitializer.createApplicationProperties(baseDir, siteUrl)
+
+            // 4. Generate build file
+            when (buildSystem) {
+                BuildSystem.MAVEN -> createMavenProject(baseDir)
+                BuildSystem.GRADLE -> createGradleProject(baseDir)
+            }
+
+            // 5. Mark src/main/resources as resource root
+            val resourcesDir = baseDir.findFileByRelativePath("src/main/resources")
+            if (resourcesDir != null) {
+                contentEntry.addSourceFolder(resourcesDir, JavaResourceRootType.RESOURCE)
+            }
         }
     }
 
