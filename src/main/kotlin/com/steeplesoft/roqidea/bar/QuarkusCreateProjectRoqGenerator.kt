@@ -1,5 +1,7 @@
 package com.steeplesoft.roqidea.bar
 
+import com.steeplesoft.roqidea.wizard.RoqProjectConfig
+import com.steeplesoft.roqidea.wizard.RoqProjectGenerator
 import io.quarkus.devtools.commands.CreateProject
 import io.quarkus.devtools.messagewriter.MessageWriter
 import io.quarkus.devtools.project.BuildTool
@@ -36,7 +38,7 @@ import java.nio.file.Path
  *
  * @see <a href="https://github.com/quarkusio/quarkus/blob/main/independent-projects/tools/devtools-common/src/main/java/io/quarkus/devtools/commands/CreateProject.java">CreateProject</a>
  */
-class QuarkusCreateProjectRoqGenerator {
+class QuarkusCreateProjectRoqGenerator : RoqProjectGenerator {
 
     companion object {
         /** Default Quarkus platform version */
@@ -56,33 +58,6 @@ class QuarkusCreateProjectRoqGenerator {
     }
 
     /**
-     * Configuration for creating a Roq project.
-     *
-     * @property outputPath Directory where the project will be created
-     * @property groupId Maven/Gradle group ID (e.g., "com.example")
-     * @property artifactId Maven/Gradle artifact ID (e.g., "my-roq-site")
-     * @property version Project version (e.g., "1.0.0-SNAPSHOT")
-     * @property buildTool Build tool to use (MAVEN, GRADLE, or GRADLE_KOTLIN_DSL)
-     * @property javaVersion Target Java version (e.g., "21")
-     * @property quarkusVersion Quarkus platform version to use
-     * @property roqVersion Roq extension version to use
-     * @property includeDefaultTheme Whether to include the default Roq theme
-     * @property additionalPlugins Set of additional Roq plugin names to include
-     */
-    data class RoqProjectConfig(
-        val outputPath: Path,
-        val groupId: String = "com.example",
-        val artifactId: String = "my-roq-site",
-        val version: String = "1.0.0-SNAPSHOT",
-        val buildTool: BuildTool = BuildTool.MAVEN,
-        val javaVersion: String = "21",
-        val quarkusVersion: String = QUARKUS_VERSION,
-        val roqVersion: String = ROQ_VERSION,
-        val includeDefaultTheme: Boolean = true,
-        val additionalPlugins: Set<String> = emptySet()
-    )
-
-    /**
      * Creates a new Roq project using the Quarkus CreateProject command.
      *
      * This method uses the CreateProject command API to generate a complete
@@ -92,7 +67,7 @@ class QuarkusCreateProjectRoqGenerator {
      * @throws io.quarkus.registry.RegistryResolutionException if extension catalog cannot be resolved
      * @throws io.quarkus.devtools.commands.handlers.ProjectCreationException if project generation fails
      */
-    fun createRoqProject(config: RoqProjectConfig) {
+    override fun createRoqProject(config: RoqProjectConfig) {
         // Build list of extensions to include
         val extensions = buildExtensionList(config)
 

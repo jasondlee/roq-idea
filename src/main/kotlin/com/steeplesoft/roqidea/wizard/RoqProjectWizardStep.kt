@@ -17,7 +17,6 @@ import javax.swing.*
 class RoqProjectWizardStep(private val builder: RoqModuleBuilder) : ModuleWizardStep() {
 
     // Generation mode radio buttons
-    private val manualRadio = JRadioButton("Manual generation", false)
     private val codestartRadio = JRadioButton("Quarkus Codestart API", false)
     private val createProjectRadio = JRadioButton("CreateProject Command API (recommended)", true)
 
@@ -33,7 +32,6 @@ class RoqProjectWizardStep(private val builder: RoqModuleBuilder) : ModuleWizard
     init {
         // Group generation mode radio buttons
         val generationModeGroup = ButtonGroup()
-        generationModeGroup.add(manualRadio)
         generationModeGroup.add(codestartRadio)
         generationModeGroup.add(createProjectRadio)
 
@@ -42,7 +40,6 @@ class RoqProjectWizardStep(private val builder: RoqModuleBuilder) : ModuleWizard
             layout = BoxLayout(this, BoxLayout.Y_AXIS)
             add(createProjectRadio)
             add(codestartRadio)
-            add(manualRadio)
         }
 
         // Group build system radio buttons
@@ -115,7 +112,6 @@ class RoqProjectWizardStep(private val builder: RoqModuleBuilder) : ModuleWizard
     override fun updateDataModel() {
         // Save generation mode preference
         builder.generationMode = when {
-            manualRadio.isSelected -> RoqModuleBuilder.GenerationMode.MANUAL
             codestartRadio.isSelected -> RoqModuleBuilder.GenerationMode.CODESTART_API
             createProjectRadio.isSelected -> RoqModuleBuilder.GenerationMode.CREATE_PROJECT_COMMAND
             else -> RoqModuleBuilder.GenerationMode.CREATE_PROJECT_COMMAND // default

@@ -1,5 +1,7 @@
 package com.steeplesoft.roqidea.bar
 
+import com.steeplesoft.roqidea.wizard.RoqProjectConfig
+import com.steeplesoft.roqidea.wizard.RoqProjectGenerator
 import io.quarkus.devtools.codestarts.quarkus.QuarkusCodestartCatalog
 import io.quarkus.devtools.codestarts.quarkus.QuarkusCodestartData.QuarkusDataKey
 import io.quarkus.devtools.codestarts.quarkus.QuarkusCodestartProjectInput
@@ -43,7 +45,7 @@ import java.nio.file.Paths
  * @see <a href="https://github.com/quarkusio/quarkus/tree/main/devtools">Quarkus Devtools</a>
  * @see <a href="https://quarkiverse.github.io/quarkiverse-docs/quarkus-roq/dev/">Roq Documentation</a>
  */
-class QuarkusCodestartRoqProjectGenerator {
+class QuarkusCodestartRoqProjectGenerator : RoqProjectGenerator {
 
     companion object {
         /** Default Quarkus platform version */
@@ -96,33 +98,6 @@ class QuarkusCodestartRoqProjectGenerator {
     }
 
     /**
-     * Configuration for creating a Roq project.
-     *
-     * @property outputPath Directory where the project will be created
-     * @property groupId Maven/Gradle group ID (e.g., "com.example")
-     * @property artifactId Maven/Gradle artifact ID (e.g., "my-roq-site")
-     * @property version Project version (e.g., "1.0.0-SNAPSHOT")
-     * @property buildTool Build tool to use (MAVEN, GRADLE, or GRADLE_KOTLIN_DSL)
-     * @property javaVersion Target Java version (e.g., "21")
-     * @property quarkusVersion Quarkus platform version to use
-     * @property roqVersion Roq extension version to use
-     * @property includeDefaultTheme Whether to include the default Roq theme
-     * @property additionalPlugins Set of additional Roq plugin names to include (e.g., "tagging", "sitemap", "lunr")
-     */
-    data class RoqProjectConfig(
-        val outputPath: Path,
-        val groupId: String = "com.example",
-        val artifactId: String = "my-roq-site",
-        val version: String = "1.0.0-SNAPSHOT",
-        val buildTool: BuildTool = BuildTool.MAVEN,
-        val javaVersion: String = "21",
-        val quarkusVersion: String = QUARKUS_VERSION,
-        val roqVersion: String = ROQ_VERSION,
-        val includeDefaultTheme: Boolean = true,
-        val additionalPlugins: Set<String> = emptySet()
-    )
-
-    /**
      * Available Roq plugins that can be included in projects.
      * Based on the official Roq plugin ecosystem.
      */
@@ -159,7 +134,7 @@ class QuarkusCodestartRoqProjectGenerator {
      * @throws io.quarkus.registry.RegistryResolutionException if extension catalog cannot be resolved
      * @throws io.quarkus.devtools.codestarts.CodestartStructureException if project generation fails
      */
-    fun createRoqProject(config: RoqProjectConfig) {
+    override fun createRoqProject(config: RoqProjectConfig) {
         // Step 1: Resolve extension catalog from Quarkus registry
         val extensionCatalog = resolveExtensionCatalog(config.quarkusVersion)
 

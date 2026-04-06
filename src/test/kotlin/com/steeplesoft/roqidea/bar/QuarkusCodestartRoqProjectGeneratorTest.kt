@@ -1,5 +1,6 @@
 package com.steeplesoft.roqidea.bar
 
+import com.steeplesoft.roqidea.wizard.RoqProjectConfig
 import io.quarkus.devtools.project.BuildTool
 import org.junit.Assert.*
 import org.junit.Rule
@@ -29,7 +30,7 @@ class QuarkusCodestartRoqProjectGeneratorTest {
         val generator = QuarkusCodestartRoqProjectGenerator()
         val outputPath = tempFolder.root.toPath().resolve("test-maven-roq-project")
 
-        val config = QuarkusCodestartRoqProjectGenerator.RoqProjectConfig(
+        val config = RoqProjectConfig(
             outputPath = outputPath,
             groupId = "com.example.test",
             artifactId = "test-roq-maven",
@@ -73,7 +74,7 @@ class QuarkusCodestartRoqProjectGeneratorTest {
         val generator = QuarkusCodestartRoqProjectGenerator()
         val outputPath = tempFolder.root.toPath().resolve("test-gradle-roq-project")
 
-        val config = QuarkusCodestartRoqProjectGenerator.RoqProjectConfig(
+        val config = RoqProjectConfig(
             outputPath = outputPath,
             groupId = "com.example.test",
             artifactId = "test-roq-gradle",
@@ -106,7 +107,7 @@ class QuarkusCodestartRoqProjectGeneratorTest {
         val generator = QuarkusCodestartRoqProjectGenerator()
         val outputPath = tempFolder.root.toPath().resolve("test-no-theme")
 
-        val config = QuarkusCodestartRoqProjectGenerator.RoqProjectConfig(
+        val config = RoqProjectConfig(
             outputPath = outputPath,
             groupId = "com.example.test",
             artifactId = "test-no-theme",
@@ -129,7 +130,7 @@ class QuarkusCodestartRoqProjectGeneratorTest {
         val generator = QuarkusCodestartRoqProjectGenerator()
         val outputPath = tempFolder.root.toPath().resolve("test-app-props")
 
-        val config = QuarkusCodestartRoqProjectGenerator.RoqProjectConfig(
+        val config = RoqProjectConfig(
             outputPath = outputPath,
             groupId = "com.example",
             artifactId = "test-app-props"
@@ -152,7 +153,7 @@ class QuarkusCodestartRoqProjectGeneratorTest {
         val generator = QuarkusCodestartRoqProjectGenerator()
         val outputPath = tempFolder.root.toPath().resolve("test-content")
 
-        val config = QuarkusCodestartRoqProjectGenerator.RoqProjectConfig(
+        val config = RoqProjectConfig(
             outputPath = outputPath,
             groupId = "com.example",
             artifactId = "test-content"
@@ -181,7 +182,7 @@ class QuarkusCodestartRoqProjectGeneratorTest {
         val generator = QuarkusCodestartRoqProjectGenerator()
         val outputPath = tempFolder.root.toPath().resolve("test-java-version")
 
-        val config = QuarkusCodestartRoqProjectGenerator.RoqProjectConfig(
+        val config = RoqProjectConfig(
             outputPath = outputPath,
             groupId = "com.example",
             artifactId = "test-java-version",
@@ -204,7 +205,7 @@ class QuarkusCodestartRoqProjectGeneratorTest {
         // Use a path that doesn't exist and can't be created
         val invalidPath = Paths.get("/invalid/nonexistent/path/that/cannot/be/created")
 
-        val config = QuarkusCodestartRoqProjectGenerator.RoqProjectConfig(
+        val config = RoqProjectConfig(
             outputPath = invalidPath,
             groupId = "com.example",
             artifactId = "test-invalid"
