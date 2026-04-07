@@ -32,9 +32,9 @@ repositories {
 // Dependencies are managed with Gradle version catalog - read more: https://docs.gradle.org/current/userguide/version_catalogs.html
 dependencies {
     // Quarkus Codestart API dependencies
-    implementation("io.quarkus:quarkus-devtools-registry-client:3.34.1")
-    implementation("io.quarkus:quarkus-devtools-common:3.34.1")
-    implementation("io.quarkus:quarkus-devtools-codestarts:3.34.1")
+    implementation("io.quarkus:quarkus-devtools-registry-client:3.34.2")
+    implementation("io.quarkus:quarkus-devtools-common:3.34.2")
+    implementation("io.quarkus:quarkus-devtools-codestarts:3.34.2")
 
     testImplementation(libs.junit)
     testImplementation(libs.opentest4j)
